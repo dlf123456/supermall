@@ -114,11 +114,7 @@
   import HomeSwiper from './childComps/HomeSwiper'
   import RecommendView from './childComps/RecommendView.vue'
   import HomeFeatureView from './childComps/HomeFeatureView.vue'
-<<<<<<< HEAD
   import {getHomeMultiData, getHomeGoods} from 'network/home'
-=======
-  import {getHomeMultiData} from 'network/home'
->>>>>>> 562e9e8ab27897c6c03563c8ea95daf82ba8f38a
   
  export default {
    name: "Home",
@@ -130,7 +126,6 @@
      TabControl
    },
    data() {
-<<<<<<< HEAD
       return{
         banners: [],
         recommends:[],
@@ -164,11 +159,6 @@
          this.goods[type].page += 1
       })
      }
-=======
-     return{
-       banners: [],
-       recommends:[]
-     }
    },
    created() {
      getHomeMultiData().then(res => {
@@ -176,18 +166,13 @@
        this.banners = res.data.banner.list;
        this.recommends = res.data.recommend.list;
      })
->>>>>>> 562e9e8ab27897c6c03563c8ea95daf82ba8f38a
    }
  }
  </script>
 
  <style scoped>
   #home{
-<<<<<<< HEAD
     padding-top: 44px;
-=======
-    padding-top:44px ;
->>>>>>> 562e9e8ab27897c6c03563c8ea95daf82ba8f38a
   }
   .home-nav{
     background-color: var(--color-tint);
