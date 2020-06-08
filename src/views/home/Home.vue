@@ -4,9 +4,9 @@
     <home-swiper :banners="banners"></home-swiper> 
     <recommend-view :recommends="recommends"></recommend-view>
     <home-feature-view></home-feature-view>
-    <tab-control class="tab-control" :titles="['流行','新款','精选']">
-    
+    <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick">
     </tab-control>
+    <good-list :goods = "goods['pop'].list"></good-list>
     <ul>
       <li>1</li>
       <li>1</li>
@@ -108,12 +108,13 @@
   </div>
 </template>
  <script>
-  import NavBar from 'components/common/navbar/NavBar.vue'
-  import TabControl from 'components/content/tabControl/TabControl.vue'
+  import NavBar from 'components/common/navbar/NavBar'
+  import TabControl from 'components/content/tabControl/TabControl'
+  import GoodList from 'components/content/goods/GoodsList'
 
   import HomeSwiper from './childComps/HomeSwiper'
-  import RecommendView from './childComps/RecommendView.vue'
-  import HomeFeatureView from './childComps/HomeFeatureView.vue'
+  import RecommendView from './childComps/RecommendView'
+  import HomeFeatureView from './childComps/HomeFeatureView'
   import {getHomeMultiData, getHomeGoods} from 'network/home'
   
  export default {
@@ -123,7 +124,8 @@
      HomeSwiper,
      RecommendView,
      HomeFeatureView,
-     TabControl
+     TabControl,
+     GoodList
    },
    data() {
       return{
@@ -145,9 +147,13 @@
       // this.getHomeGoods('sell')
    },
    methods: {
+     //事件监听相关
+     tabClick(index) {
+       console.log(index)
+     },
+     // 网络请求相关
      getHomeMultiData() {
       getHomeMultiData().then(res => {
-        console.warn(res);
         this.banners = res.data.banner.list;
         this.recommends = res.data.recommend.list;
       })
@@ -160,13 +166,6 @@
       })
      }
    },
-   created() {
-     getHomeMultiData().then(res => {
-       console.warn(res);
-       this.banners = res.data.banner.list;
-       this.recommends = res.data.recommend.list;
-     })
-   }
  }
  </script>
 

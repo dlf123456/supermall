@@ -8,6 +8,14 @@ module.exports = {
         'network': '@/network',
         'views': '@/views',
       }
-    }
+    },
   }
 }
+// module.exports = {
+//   resolve: {
+//     extensions: ['.js', '.vue', '.json'],
+//     alias: {
+//       '@': resolve('src')
+//     }
+//   }
+// }
