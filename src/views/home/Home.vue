@@ -6,8 +6,8 @@
     <home-feature-view></home-feature-view>
     <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick">
     </tab-control>
-    <good-list :goods = "goods['pop'].list"></good-list>
-    <ul>
+    <good-list :goods = "showGoods"></good-list>
+    <!-- <ul>
       <li>1</li>
       <li>1</li>
       <li>1</li>
@@ -104,7 +104,7 @@
       <li>1</li>
       <li>1</li>
       <li>1</li>
-    </ul>
+    </ul> -->
   </div>
 </template>
  <script>
@@ -135,21 +135,36 @@
           'pop':{page:0, list:[]},
           'new':{page:0, list:[]},
           'sell':{page:0, list:[]},
-        }
+        },
+        currentType: 'pop'
       }
+   },
+   computed: {
+     showGoods() {
+       return this.goods[this.currentType].list
+     }
    },
    created() {
      // 请求多个数据
       this.getHomeMultiData()
      // 请求商品数据
       this.getHomeGoods('pop')
-      // this.getHomeGoods('new')
-      // this.getHomeGoods('sell')
+      this.getHomeGoods('new')
+      this.getHomeGoods('sell')
    },
    methods: {
      //事件监听相关
      tabClick(index) {
-       console.log(index)
+      switch (index) {
+        case 0:
+          this.currentType = 'pop'
+          break
+        case 1:
+          this.currentType = 'new'
+          break
+        case 2:
+          this.currentType = 'sell'
+       }
      },
      // 网络请求相关
      getHomeMultiData() {
@@ -171,7 +186,9 @@
 
  <style scoped>
   #home{
-    padding-top: 44px;
+    padding-bottom: 44px;
+    /* height: 100vh; */
+    position: relative;
   }
   .home-nav{
     background-color: var(--color-tint);
@@ -179,11 +196,12 @@
     position: fixed;
     left: 0;
     right: 0;
-    top: 0;
-    z-index: 9;
+    top:0;
+    z-index: 100;
   }
   .tab-control{
     position: sticky;
     top:100px;
+    z-index: 9;
   }
  </style>
