@@ -1,121 +1,28 @@
 <template>
   <div id="home">
     <NavBar class="home-nav"><div slot="center">购物街</div></NavBar> 
-    <home-swiper :banners="banners"></home-swiper> 
-    <recommend-view :recommends="recommends"></recommend-view>
-    <home-feature-view></home-feature-view>
-    <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick">
-    </tab-control>
-    <good-list :goods = "showGoods"></good-list>
-    <!-- <ul>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-      <li>1</li>
-    </ul> -->
+    <scroll class="content">
+      <home-swiper :banners="banners"></home-swiper> 
+        <recommend-view :recommends="recommends"></recommend-view>
+        <home-feature-view></home-feature-view>
+        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick">
+        </tab-control>
+        <good-list :goods = "showGoods"></good-list>
+    </scroll>
   </div>
 </template>
  <script>
   import NavBar from 'components/common/navbar/NavBar'
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodList from 'components/content/goods/GoodsList'
+  import Scroll from 'components/common/scroll/Scroll'
 
   import HomeSwiper from './childComps/HomeSwiper'
   import RecommendView from './childComps/RecommendView'
   import HomeFeatureView from './childComps/HomeFeatureView'
   import {getHomeMultiData, getHomeGoods} from 'network/home'
+
+  import BScroll from 'better-scroll'
   
  export default {
    name: "Home",
@@ -125,7 +32,8 @@
      RecommendView,
      HomeFeatureView,
      TabControl,
-     GoodList
+     GoodList,
+     Scroll
    },
    data() {
       return{
@@ -186,8 +94,8 @@
 
  <style scoped>
   #home{
-    padding-bottom: 44px;
-    /* height: 100vh; */
+    padding-top: 44px;
+    height: 100vh;
     position: relative;
   }
   .home-nav{
@@ -197,11 +105,19 @@
     left: 0;
     right: 0;
     top:0;
-    z-index: 100;
+    z-index: 9;
   }
   .tab-control{
     position: sticky;
-    top:100px;
+    top:44px;
     z-index: 9;
+  }
+  .content{
+    position: absolute;
+    overflow: hidden;
+    top: 44px;
+    bottom: 49px;
+    left:0;
+    right: 0;
   }
  </style>
