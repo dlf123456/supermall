@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <NavBar class="home-nav"><div slot="center">购物街</div></NavBar> 
-    <scroll class="content">
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true">
       <home-swiper :banners="banners"></home-swiper> 
         <recommend-view :recommends="recommends"></recommend-view>
         <home-feature-view></home-feature-view>
@@ -9,6 +9,7 @@
         </tab-control>
         <good-list :goods = "showGoods"></good-list>
     </scroll>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
  <script>
@@ -16,6 +17,7 @@
   import TabControl from 'components/content/tabControl/TabControl'
   import GoodList from 'components/content/goods/GoodsList'
   import Scroll from 'components/common/scroll/Scroll'
+  import BackTop from 'components/content/backTop/BackTop'
 
   import HomeSwiper from './childComps/HomeSwiper'
   import RecommendView from './childComps/RecommendView'
@@ -33,7 +35,8 @@
      HomeFeatureView,
      TabControl,
      GoodList,
-     Scroll
+     Scroll,
+     BackTop
    },
    data() {
       return{
@@ -44,7 +47,8 @@
           'new':{page:0, list:[]},
           'sell':{page:0, list:[]},
         },
-        currentType: 'pop'
+        currentType: 'pop',
+        isShowBackTop: false
       }
    },
    computed: {
@@ -73,6 +77,13 @@
         case 2:
           this.currentType = 'sell'
        }
+     },
+     backClick() {
+       console.log('111')
+       this.$refs.scroll.scrollTo(0,0,500)
+     },
+     contentScroll(position) {
+       this.isShowBackTop = (-position.y) > 1000
      },
      // 网络请求相关
      getHomeMultiData() {
@@ -108,7 +119,7 @@
     z-index: 9;
   }
   .tab-control{
-    position: sticky;
+    /* position: sticky; */
     top:44px;
     z-index: 9;
   }
