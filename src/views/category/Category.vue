@@ -1,9 +1,17 @@
 <template>
-  <h2>category</h2>
+  <ul class="content">
+    
+  </ul>
 </template>
  <script>
+ import BScroll from 'better-scroll'
  export default {
-   name: "Home"
+   name: "Category",
+   created() {
+     new BScroll('.content',{
+
+     })
+   }
  }
  </script>
 
