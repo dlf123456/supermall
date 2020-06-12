@@ -36,10 +36,12 @@ export default {
     this.scroll.on('scroll',(position) => {
       this.$emit('scroll',position)
     })
-    // 监听上拉时间
-    this.scroll.on('pullingUp', () => {
-      this.$emit('pullingUp')
-    })
+    // 监听scroll滚动到底部
+    if(this.pullUpLoad) {
+      this.scroll.on('pullingUp', () => {
+        this.$emit('pullingUp')
+      })
+    }
   },
   methods: {
     scrollTo(x, y, time=300) {
@@ -49,7 +51,6 @@ export default {
       this.scroll.finishPullUp()
     },
     refresh() {
-      console.log('---')
       this.scroll && this.scroll.refresh()
     }
   }

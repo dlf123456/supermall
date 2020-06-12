@@ -11,11 +11,11 @@ export default {
     return {
     };
   },
-  // methods: {
-  //   backClick() {
-  //     this.$$emit('backClick')
-  //   }
-  // }
+  methods: {
+    backClick() {
+      this.$$emit('backClick')
+    }
+  }
 }
 
 </script>

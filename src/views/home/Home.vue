@@ -3,10 +3,10 @@
     <NavBar class="home-nav"><div slot="center">购物街</div></NavBar> 
     <scroll class="content" ref="scroll" :probe-type="3"
      @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore">
-      <home-swiper :banners="banners"></home-swiper> 
+      <home-swiper :banners="banners"  @swiperImageLoad="swiperImageLoad"></home-swiper> 
         <recommend-view :recommends="recommends"></recommend-view>
         <home-feature-view></home-feature-view>
-        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick">
+        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl">
         </tab-control>
         <good-list :goods = "showGoods"></good-list>
     </scroll>
@@ -24,6 +24,7 @@
   import RecommendView from './childComps/RecommendView'
   import HomeFeatureView from './childComps/HomeFeatureView'
   import {getHomeMultiData, getHomeGoods} from 'network/home'
+  import {debounce} from 'common/utils'
 
   import BScroll from 'better-scroll'
   
@@ -49,7 +50,8 @@
           'sell':{page:0, list:[]},
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        tabOffsetTop: 0
       }
    },
    computed: {
@@ -66,22 +68,15 @@
       this.getHomeGoods('sell')
    },
    mounted() {
-     const refresh = this.debounce(this.$refs.scroll.refresh,200)
+     // 图片加载时间监听
+     const refresh =debounce(this.$refs.scroll.refresh,200)
      // 监听item中图片加载完成
       this.$bus.$on('itemImageLoad', () => {
         refresh()
       })
+      
    },
    methods: {
-     debounce(func, delay) {
-       let timer = null
-       return function (...args) {
-         if (timer) clearTimeout(timer)
-         timer = setTimeout(() => {
-           func.apply(this, args)
-         }, delay)
-       }
-     },
      //事件监听相关
      tabClick(index) {
       switch (index) {
@@ -104,7 +99,10 @@
      },
      loadMore() {
        this.getHomeGoods(this.currentType)
-       this.$refs.scroll.scroll.refresh()
+     },
+     swiperImageLoad() {
+       console.log(this.$refs.tabControl.$el.offsetTop)
+      //  this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
      },
      // 网络请求相关
      getHomeMultiData() {
@@ -118,8 +116,8 @@
        getHomeGoods(type,page).then(res => {
          this.goods[type].list.push(...res.data.list)
          this.goods[type].page += 1
-
-
+          //完成上拉加载更多
+          this.$refs.scroll.finishPullUp()
       })
      }
    },
