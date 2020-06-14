@@ -6,7 +6,7 @@
       <home-swiper :banners="banners"  @swiperImageLoad="swiperImageLoad"></home-swiper> 
         <recommend-view :recommends="recommends"></recommend-view>
         <home-feature-view></home-feature-view>
-        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl">
+        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl" :class="{fixed:isTabFixed}">
         </tab-control>
         <good-list :goods = "showGoods"></good-list>
     </scroll>
@@ -51,7 +51,8 @@
         },
         currentType: 'pop',
         isShowBackTop: false,
-        tabOffsetTop: 0
+        tabOffsetTop: 0,
+        isTabFixed: false
       }
    },
    computed: {
@@ -95,14 +96,17 @@
        this.$refs.scroll.scrollTo(0,0,500)
      },
      contentScroll(position) {
+       // 1、判断BackTop是否显示
        this.isShowBackTop = (-position.y) > 1000
+       // 2、决定tabControl是否吸顶(position: fixed)
+       this.isTabFixed = (-position.y) > this.tabOffsetTop
      },
      loadMore() {
        this.getHomeGoods(this.currentType)
      },
      swiperImageLoad() {
        console.log(this.$refs.tabControl.$el.offsetTop)
-      //  this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
+       this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
      },
      // 网络请求相关
      getHomeMultiData() {
@@ -143,6 +147,12 @@
     /* position: sticky; */
     top:44px;
     z-index: 9;
+  }
+  .fixed {
+    position: fixed;
+    left: 0;
+    right:0;
+    top: 44px;
   }
   .content{
     position: absolute;
