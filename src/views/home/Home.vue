@@ -6,7 +6,7 @@
       <home-swiper :banners="banners"  @swiperImageLoad="swiperImageLoad"></home-swiper> 
         <recommend-view :recommends="recommends"></recommend-view>
         <home-feature-view></home-feature-view>
-        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl" :class="{fixed:isTabFixed}">
+        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl">
         </tab-control>
         <good-list :goods = "showGoods"></good-list>
     </scroll>
