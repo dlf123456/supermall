@@ -1,12 +1,14 @@
 <template>
   <div id="home">
     <NavBar class="home-nav"><div slot="center">购物街</div></NavBar> 
+    <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" class="tab-control" ref="tabControl1" v-show="isTabFixed">
+    </tab-control>
     <scroll class="content" ref="scroll" :probe-type="3"
      @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore">
       <home-swiper :banners="banners"  @swiperImageLoad="swiperImageLoad"></home-swiper> 
         <recommend-view :recommends="recommends"></recommend-view>
         <home-feature-view></home-feature-view>
-        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl">
+        <tab-control  :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl2" :class="{fixed:isTabFixed}">
         </tab-control>
         <good-list :goods = "showGoods"></good-list>
     </scroll>
@@ -52,13 +54,24 @@
         currentType: 'pop',
         isShowBackTop: false,
         tabOffsetTop: 0,
-        isTabFixed: false
+        isTabFixed: false,
+        saveY:0
       }
    },
    computed: {
      showGoods() {
        return this.goods[this.currentType].list
      }
+   },
+   destroyed() {
+
+   },
+   activated() {
+     this.$refs.scroll.scrollTo(0,this.saveY,0)
+     this.$refs.scroll.refresh()
+   },
+   deactivated() {
+     this.saveY = this.$refs.scroll.getScrollY()
    },
    created() {
      // 请求多个数据
@@ -90,6 +103,7 @@
         case 2:
           this.currentType = 'sell'
        }
+       this.$refs.tabControl1.currentIndex = index;
      },
      backClick() {
        console.log('111')
@@ -105,8 +119,7 @@
        this.getHomeGoods(this.currentType)
      },
      swiperImageLoad() {
-       console.log(this.$refs.tabControl.$el.offsetTop)
-       this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
+       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
      },
      // 网络请求相关
      getHomeMultiData() {
@@ -144,8 +157,7 @@
     z-index: 9;
   }
   .tab-control{
-    /* position: sticky; */
-    top:44px;
+    position: relative;
     z-index: 9;
   }
   .fixed {
