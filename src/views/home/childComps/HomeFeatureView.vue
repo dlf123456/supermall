@@ -11,7 +11,7 @@
         name: "HomeFeatureView"
     }
 </script>
-
+  
 <style scoped>
   .home-feature img{
     width: 100%;
